@@ -115,7 +115,7 @@ def harvest_test(test_input, refdir, new, messages):
     for test in test_input.tests:
         try:
             test.harvest_other(test_input, messages)
-        except Exception, e:
+        except Exception as e:
             messages.append(traceback.format_exc())
 
 
@@ -130,7 +130,7 @@ def harvest_file(path_out, fragments, messages):
     for fragment in fragments:
         try:
             fragment.digest()
-        except Exception, e:
+        except Exception as e:
             messages.append(traceback.format_exc())
 
 
@@ -210,47 +210,47 @@ class ScalarTest(Test):
 
     def log_txt(self, f):
         if self.different is True:
-            print >> f, '    tst % .8e' % self.tst.value
+            print('    tst % .8e' % self.tst.value, file=f)
             if self.ref.value == 0.0:
-                print >> f, '    ref % .8e    abs err % .8e' % \
-                    (self.ref.value, self.ref_error)
+                print('    ref % .8e    abs err % .8e' % \
+                    (self.ref.value, self.ref_error), file=f)
             else:
-                print >> f, '    ref % .8e    rel err % .8e' % \
-                    (self.ref.value, self.ref_error/abs(self.ref.value))
+                print('    ref % .8e    rel err % .8e' % \
+                    (self.ref.value, self.ref_error/abs(self.ref.value)), file=f)
             diff_txt(f, self.ref.lines, self.tst.lines, 'ref', 'tst', '    ')
         if self.wrong is True:
-            print >> f, '    tst % .8e' % self.tst.value
+            print('    tst % .8e' % self.tst.value, file=f)
             if self.exp_value == 0.0:
-                print >> f, '    exp % .8e    abs err % .8e    threshold % .8e' % \
-                    (self.exp_value, self.exp_error, self.threshold)
+                print('    exp % .8e    abs err % .8e    threshold % .8e' % \
+                    (self.exp_value, self.exp_error, self.threshold), file=f)
             else:
-                print >> f, '    exp % .8e    rel err % .8e    threshold % .8e' % \
-                    (self.exp_value, self.exp_error/abs(self.exp_value), self.threshold)
+                print('    exp % .8e    rel err % .8e    threshold % .8e' % \
+                    (self.exp_value, self.exp_error/abs(self.exp_value), self.threshold), file=f)
 
     def log_html(self, f):
         if self.different is True:
-            print >> f, '<table>'
-            print >> f, '<tr><th>tst</th><td>% .15e</td></tr>' % self.tst.value
+            print('<table>', file=f)
+            print('<tr><th>tst</th><td>% .15e</td></tr>' % self.tst.value, file=f)
             if self.ref.value == 0.0:
-                print >> f, '<tr><th>ref</th><td>% .15e</td>' % self.ref.value
-                print >> f, '<th>abs err</th><td>% .15e</td></tr>' % self.ref_error
+                print('<tr><th>ref</th><td>% .15e</td>' % self.ref.value, file=f)
+                print('<th>abs err</th><td>% .15e</td></tr>' % self.ref_error, file=f)
             else:
-                print >> f, '<tr><th>ref</th><td>% .15e</td>' % self.ref.value
-                print >> f, '<th>abs err</th><td>% .15e</td>' % self.ref_error
-                print >> f, '<th>rel err</th><td>% .15e</td></tr>' % (self.ref_error/abs(self.ref.value))
-            print >> f, '</table>'
+                print('<tr><th>ref</th><td>% .15e</td>' % self.ref.value, file=f)
+                print('<th>abs err</th><td>% .15e</td>' % self.ref_error, file=f)
+                print('<th>rel err</th><td>% .15e</td></tr>' % (self.ref_error/abs(self.ref.value)), file=f)
+            print('</table>', file=f)
             diff_html(f, self.ref.lines, self.tst.lines, 'ref', 'tst')
         if self.wrong is True:
-            print >> f, '<table>'
-            print >> f, '<tr><th>tst</th><td>% .15e</td></tr>' % self.tst.value
+            print('<table>', file=f)
+            print('<tr><th>tst</th><td>% .15e</td></tr>' % self.tst.value, file=f)
             if self.exp_value == 0.0:
-                print >> f, '<tr><th>exp</th><td>% .15e</td>' % self.exp_value
-                print >> f, '<th>abs err</th><td>% .15e</td></tr>' % self.exp_error
+                print('<tr><th>exp</th><td>% .15e</td>' % self.exp_value, file=f)
+                print('<th>abs err</th><td>% .15e</td></tr>' % self.exp_error, file=f)
             else:
-                print >> f, '<tr><th>exp</th><td>% .15e</td>' % self.exp_value
-                print >> f, '<th>abs err</th><td>% .15e</td>' % self.exp_error
-                print >> f, '<th>rel err</th><td>% .15e</td></tr>' % (self.exp_error/abs(self.exp_value))
-            print >> f, '</table>'
+                print('<tr><th>exp</th><td>% .15e</td>' % self.exp_value, file=f)
+                print('<th>abs err</th><td>% .15e</td>' % self.exp_error, file=f)
+                print('<th>rel err</th><td>% .15e</td></tr>' % (self.exp_error/abs(self.exp_value)), file=f)
+            print('</table>', file=f)
 
 
 class CompareScalarTest(ScalarTest):
@@ -316,19 +316,19 @@ class ScriptTest(Test):
 
     def log_txt(self, f):
         if self.wrong is True:
-            print >> f, '    Script ended with return code %i' % self.return_code
-            print >> f, '   ----- last 20 lines of standard error of the script -----'
+            print('    Script ended with return code %i' % self.return_code, file=f)
+            print('   ----- last 20 lines of standard error of the script -----', file=f)
             for line in self.last_stderr_lines:
-                print >> f, line
+                print(line, file=f)
 
     def log_html(self, f):
         if self.wrong is True:
-            print >> f, '<p>Script ended with return code %i</p>' % self.return_code
-            print >> f, '<p>Last 20 lines of standard error of the script:</p>'
-            print >> f, '<pre class="grey">'
+            print('<p>Script ended with return code %i</p>' % self.return_code, file=f)
+            print('<p>Last 20 lines of standard error of the script:</p>', file=f)
+            print('<pre class="grey">', file=f)
             for line in self.last_stderr_lines:
-                print >> f, line
-            print >> f, '</pre>'
+                print(line, file=f)
+            print('</pre>', file=f)
 
 
 class ScalarFactory(object):

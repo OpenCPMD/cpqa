@@ -56,11 +56,11 @@ class CP2KSection(object):
 
     def _consistent(self):
         """Checks the constency between self.__index and self.__order"""
-        if len(self.__order) != sum(len(values) for values in self.__index.itervalues()):
+        if len(self.__order) != sum(len(values) for values in self.__index.values()):
             return False
         import copy
         tmp = copy.copy(self.__order)
-        for key, values in self.__index.iteritems():
+        for key, values in self.__index.items():
             for value in values:
                 if value.name != key:
                     return False
@@ -82,7 +82,7 @@ class CP2KSection(object):
         if len(self.__index) != len(other.__index):
             #print "len(self.__index) != len(other.__index)"
             return False
-        for key, lself in self.__index.iteritems():
+        for key, lself in self.__index.items():
             lother = other.__index.get(key)
             if lother is None:
                 #print "lother==None"
@@ -194,9 +194,9 @@ class CP2KSection(object):
 
     def dump(self, f, indent=''):
         """Dump this section and its children to a file-like object"""
-        print >> f, ("%s&%s %s" % (indent, self.__name, self.section_parameters)).rstrip()
+        print(("%s&%s %s" % (indent, self.__name, self.section_parameters)).rstrip(), file=f)
         self.dump_children(f, indent)
-        print >> f, "%s&END %s" % (indent, self.__name)
+        print("%s&END %s" % (indent, self.__name), file=f)
 
     def readline(self, f):
         """A helper method that only reads uncommented lines"""
@@ -270,9 +270,9 @@ class CP2KKeyword(object):
     def dump(self, f, indent=''):
         """Dump this keyword to a file-like object"""
         if self.__unit is None:
-            print >> f, ("%s%s %s" % (indent, self.__name, self.__value)).rstrip()
+            print(("%s%s %s" % (indent, self.__name, self.__value)).rstrip(), file=f)
         else:
-            print >> f, ("%s%s [%s] %s" % (indent, self.__name, self.__unit, self.__value)).rstrip()
+            print(("%s%s [%s] %s" % (indent, self.__name, self.__unit, self.__value)).rstrip(), file=f)
 
     def load(self, line):
         """Load this keyword from a file-like object"""

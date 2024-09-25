@@ -29,12 +29,12 @@ __all__ = ['import_main']
 
 
 def import_main(config):
-    print '... Importing tests from the source tree.'
+    print('... Importing tests from the source tree.')
 
     # load list of test types
     test_types= []
     f = open(os.path.join(config.testsrc, 'TEST_TYPES'))
-    f.next() # skip first line
+    next(f) # skip first line
     for line in f:
         line = line[:line.find('#')].strip()
         if len(line) == 0:
@@ -109,24 +109,24 @@ def import_main(config):
         f_dst = file(os.path.join(dst_test_dir, test_input), 'w')
         if not is_converted(f_src):
             # Mark converted inputs.
-            print >> f_dst, '#CPQA CONVERTED'
+            print('#CPQA CONVERTED', file=f_dst)
             # More serious directives
             if test_index >= 0:
                 regex, column = test_types[test_index].split('!')
                 # escape _some_ special characters that are to be taken literally
                 regex = regex.replace('|', '\|').replace('(', '\(').replace(')', '\)')
                 regex = regex.replace('+', '\+')
-                print >> f_dst, '#CPQA TEST SCALAR \'%s\' %i' % (
+                print('#CPQA TEST SCALAR \'%s\' %i' % (
                    regex, int(column) - 1
-                )
+                ), file=f_dst)
             resets = reset_info.get(os.path.join(test_dir, test_input), [])
             for reset in resets:
-                print >> f_dst, '#CPQA RESET', reset[0]
+                print('#CPQA RESET', reset[0], file=f_dst)
                 for line in reset[1:]:
-                    print >> f_dst, '#          ', line
+                    print('#          ', line, file=f_dst)
         # Copy of the actual test input
         for line in f_src:
-            print >> f_dst, line[:-1]
+            print(line[:-1], file=f_dst)
         f_src.close()
         f_dst.close()
         # Get the extra paths

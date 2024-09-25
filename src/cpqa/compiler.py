@@ -27,9 +27,9 @@ __all__ = ['update_source', 'compile_program']
 
 def update_source(config):
     if config.cvs_update is None:
-        print '... Skipping source code update.'
+        print('... Skipping source code update.')
     else:
-        print '... Updating to latest version of the source.'
+        print('... Updating to latest version of the source.')
         cvs_outfn = os.path.join(os.path.abspath(config.tstdir), 'cvs.log')
         f = open(cvs_outfn, 'w')
         p = subprocess.Popen(
@@ -43,7 +43,7 @@ def update_source(config):
 
 
 def compile_program(config):
-    print '... Compiling.'
+    print('... Compiling.')
     make_outfn = os.path.join(os.path.abspath(config.tstdir), 'compile.log')
     f = open(make_outfn, 'w')
     p = subprocess.Popen(

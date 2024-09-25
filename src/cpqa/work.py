@@ -61,7 +61,7 @@ def find_inputs(indir):
 class Work(object):
     def __init__(self, config):
         self.config = config
-        print '... Preparing work tree.'
+        print('... Preparing work tree.')
         # Setup a few directories
         if not os.path.isdir(config.indir):
             raise IOError('Input directory "%s" is not present.' % config.indir)
@@ -90,7 +90,7 @@ class Work(object):
 class LastWork(object):
     def __init__(self, config):
         self.config = config
-        print '... Checking work tree.'
+        print('... Checking work tree.')
         # Setup a few directories
         if not os.path.isdir(config.indir):
             raise IOError('Input directory "%s" is not present.' % config.indir)

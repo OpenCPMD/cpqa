@@ -46,23 +46,23 @@ class Config(object):
         self.mpi_suffix = user_config.__dict__.get('mpi_suffix', None)
         os.remove('config.pyc')
         # Some type checking on the config.py data
-        if not isinstance(self.root, basestring):
+        if not isinstance(self.root, str):
             raise TypeError('Error in config.py: root must be a string.')
-        if not isinstance(self.arch, basestring):
+        if not isinstance(self.arch, str):
             raise TypeError('Error in config.py: arch must be a string.')
-        if not isinstance(self.version, basestring):
+        if not isinstance(self.version, str):
             raise TypeError('Error in config.py: version must be a string.')
-        if not isinstance(self.bin, basestring):
+        if not isinstance(self.bin, str):
             raise TypeError('Error in config.py: bin must be a string.')
-        if not isinstance(self.testsrc, basestring):
+        if not isinstance(self.testsrc, str):
             raise TypeError('Error in config.py: testsrc must be a string.')
-        if not isinstance(self.ppdir, basestring):
+        if not isinstance(self.ppdir, str):
             raise TypeError('Error in config.py: ppdir must be a string.')
-        if not isinstance(self.make, basestring):
+        if not isinstance(self.make, str):
             raise TypeError('Error in config.py: make must be a string.')
-        if not isinstance(self.makedir, basestring):
+        if not isinstance(self.makedir, str):
             raise TypeError('Error in config.py: makedir must be a string.')
-        if self.cvs_update is not None and not isinstance(self.cvs_update, basestring):
+        if self.cvs_update is not None and not isinstance(self.cvs_update, str):
             raise TypeError('Error in config.py: cvs_update must be a string.')
         if not isinstance(self.nproc, int):
             raise TypeError('Error in config.py: nproc must be an integer.')
@@ -73,11 +73,11 @@ class Config(object):
         if self.nproc_mpi <= 0:
             raise ValueError('Error in config.py: nproc_mpi must be strictly positive.')
         if self.mpi_prefix is not None:
-            if not isinstance(self.mpi_prefix, basestring):
+            if not isinstance(self.mpi_prefix, str):
                 raise TypeError('Error in config.py: mpi_prefix must be a string or None.')
             self.mpi_prefix = self.mpi_prefix % self.nproc_mpi
         if self.mpi_suffix is not None:
-            if not isinstance(self.mpi_suffix, basestring):
+            if not isinstance(self.mpi_suffix, str):
                 raise TypeError('Error in config.py: mpi_suffix must be a string or None.')
             self.mpi_suffix=" "+self.mpi_suffix
         # Some derived config vars and checks
@@ -132,7 +132,7 @@ class Config(object):
     def filter_inputs_name(self, test_inputs):
         result = []
         if len(self.select_paths_inp) > 0 or len(self.select_dirs) > 0:
-            print '... Making selection of inputs (based on names).'
+            print('... Making selection of inputs (based on names).')
             for test_input in test_inputs:
                 done = False
                 for select_path_inp in self.select_paths_inp:
@@ -147,7 +147,7 @@ class Config(object):
                         result.append(test_input)
                         break
         else:
-            print '... Taking all input files.'
+            print('... Taking all input files.')
             result = test_inputs
         return result
 
@@ -155,7 +155,7 @@ class Config(object):
         if self.faster_than is None and self.slower_than is None:
             return test_inputs
         elif self.faster_than is not None:
-            print '... Selecting fast jobs (faster than %.2fs)' % self.faster_than
+            print('... Selecting fast jobs (faster than %.2fs)' % self.faster_than)
             # jobs without timing are not included.
             return [
                 ti for ti in test_inputs if
@@ -163,7 +163,7 @@ class Config(object):
                 ti.ref_result.seconds < self.faster_than
             ]
         else:
-            print '... Selecting slow jobs (faster than %.2fs)' % self.slower_than
+            print('... Selecting slow jobs (faster than %.2fs)' % self.slower_than)
             # jobs without timing are not included.
             return [
                 ti for ti in test_inputs if
